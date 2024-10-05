@@ -1,0 +1,24 @@
+{
+    "name": "app-nodejs-codechallenge",
+    "version": "1.0.0",
+    "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start:transactions": "ts-node ./apps/transactions/src/infrastructure/server.ts",
+        "dev:transactions": "nodemon --watch ./apps/transactions/src --exec ts-node ./apps/transactions/src/infrastructure/server.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.21.0",
+        "nodemon": "^3.1.7"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.0",
+        "@types/node": "^22.7.4",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.6.2"
+    }
+}
