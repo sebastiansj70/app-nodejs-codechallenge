@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { createTransaction } from '../controllers/transaction.controller';
+import { createTransaction, updateTransaction } from '../controllers/transaction.controller';
 
 const router = Router();
 
@@ -10,4 +10,9 @@ router.get('/', (req: Request, res: Response) => {
 router.post('/create', async (req: Request, res: Response) => {
     await createTransaction(req, res)
 });
+
+router.put('/:id', async (req: Request, res: Response) => {
+    await updateTransaction(req, res)
+})
+
 export default router;

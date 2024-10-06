@@ -4,9 +4,9 @@ import { Transaction } from '../../domain/entities/transaction.entity';
 const AppDataSource = new DataSource({
     type: 'postgres',
     host: 'localhost',
-    port: 5433,
+    port: 5432,
     username: 'postgres',
-    password: 'postgres',
+    password: '123456',
     database: 'postgres',
     synchronize: true,
     logging: true,
