@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+const isSQLite = process.env.NODE_ENV === 'test'
 
 @Entity('transactions')
 export class Transaction {
@@ -20,7 +21,7 @@ export class Transaction {
     @Column({ default: 'pending' })
     status: string;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @Column({ type: isSQLite ? 'datetime' : 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
     constructor(

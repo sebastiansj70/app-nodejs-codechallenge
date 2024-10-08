@@ -1,18 +1,18 @@
 import { Router, Request, Response } from 'express';
-import { createTransaction, updateTransaction } from '../controllers/transaction.controller';
+import { TransactionController } from '../controllers/transaction.controller';
+import { TransactionRepositoryImpl } from '../../domain/repositories/transaction.repository';
 
 const router = Router();
+const transactionRepository = new TransactionRepositoryImpl();
+const transactionController = new TransactionController(transactionRepository)
 
-router.get('/', (req: Request, res: Response) => {
-    res.json({ message: "Hello, this is the transactions API!" });
-});
 
 router.post('/create', async (req: Request, res: Response) => {
-    await createTransaction(req, res)
+    await transactionController.createTransaction(req, res)
 });
 
 router.put('/:id', async (req: Request, res: Response) => {
-    await updateTransaction(req, res)
-})
+    await transactionController.updateTransaction(req, res);
+});
 
 export default router;
