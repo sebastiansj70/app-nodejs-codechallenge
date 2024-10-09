@@ -1,4 +1,4 @@
-import { consumeTransactionMessages } from "./adapters/consumers/transactionConsumer";
+import { consumeTransactionMessages } from "./adapters/consumers/antiFraudConsumer";
 
 async function startAntiFraudService() {
     console.log('Starting Anti-Fraud Service...');

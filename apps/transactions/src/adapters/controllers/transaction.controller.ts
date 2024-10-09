@@ -4,8 +4,8 @@ import { TransactionRepository } from '../../domain/repositories/transaction.rep
 import { CreateTransactionUseCase } from '../../application/createTransaction.usecase';
 import { CreateTransactionDTO } from '../../domain/dtos/createTransaction.dto';
 import { validateCreateTransactionDto, validateUpdateTransactionBody } from '../validation/transaction.validator';
-import { sendTransactionMessage } from '../../infrastructure/messageBroker/kafkaProducer';
-import { mapTransactionToKafkaMessage } from '../../infrastructure/mappers/transaction.mapper';
+import { sendTransactionMessage } from '../producers/transactionProducer';
+import { mapTransactionToKafkaMessage } from '../mappers/transactionMapper';
 import { UpdatedData } from '../../domain/dtos/updatedTransaction.dto';
 
 

@@ -2,7 +2,7 @@ import { Kafka } from 'kafkajs';
 import dotenv from 'dotenv';
 import { ProcessTransactionUseCase } from '../../application/processTransaction.usecase';
 import { AntiFraudService } from '../../domain/services/antiFraud.service'
-import { produceFraudResult } from '../producers/resultProducer';
+import { produceFraudResult } from '../producers/antiFraudProducer';
 
 dotenv.config();
 

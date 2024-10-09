@@ -1,7 +1,7 @@
 import { Kafka } from 'kafkajs';
 import dotenv from 'dotenv';
 import { TransactionRepositoryImpl } from '../../domain/repositories/transaction.repository';
-import { TransactionController } from '../../adapters/controllers/transaction.controller';
+import { TransactionController } from '../controllers/transaction.controller';
 
 dotenv.config();
 
