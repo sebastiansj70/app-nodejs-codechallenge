@@ -7,5 +7,5 @@ export interface KafkaTransactionMessage {
         name: string;
     };
     value: number;
-    createdAt: Date;
+    createdAt: string;
 }

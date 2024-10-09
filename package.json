@@ -4,7 +4,7 @@
     "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
     "main": "index.js",
     "scripts": {
-        "test": "NODE_ENV=test jest",
+        "test": "jest",
         "start:transactions": "ts-node ./apps/transactions/src/server.ts",
         "dev:transactions": "nodemon --watch ./apps/transactions/src --exec ts-node ./apps/transactions/src/server.ts",
         "start:anti-fraud": "ts-node ./apps/anti-fraud/src/server.ts",
