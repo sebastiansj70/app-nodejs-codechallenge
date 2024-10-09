@@ -6,8 +6,14 @@
     "scripts": {
         "test": "NODE_ENV=test jest",
         "start:transactions": "ts-node ./apps/transactions/src/server.ts",
-        "dev:transactions": "nodemon --watch ./apps/transactions/src --exec ts-node ./apps/transactions/src/server.ts"
+        "dev:transactions": "nodemon --watch ./apps/transactions/src --exec ts-node ./apps/transactions/src/server.ts",
+        "start:anti-fraud": "ts-node ./apps/anti-fraud/src/server.ts",
+        "dev:anti-fraud": "nodemon --watch ./apps/anti-fraud/src --exec ts-node ./apps/anti-fraud/src/server.ts"
     },
+    "workspaces": [
+        "./apps/anti-fraud",
+        "./apps/transaction"
+    ],
     "keywords": [],
     "author": "",
     "license": "ISC",

@@ -6,11 +6,11 @@ import { TransactionController } from '../../adapters/controllers/transaction.co
 dotenv.config();
 
 const kafka = new Kafka({
-    clientId: process.env.KAFKA_CLIENT_ID,
+    clientId: process.env.KAFKA_CLIENT_ID_TRANSACTIONS,
     brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
 });
 
-const consumer = kafka.consumer({ groupId: process.env.KAFKA_GROUP_ID as string });
+const consumer = kafka.consumer({ groupId: process.env.KAFKA_GROUP_ID_TRANSACTIONS as string });
 const transactionRepository = new TransactionRepositoryImpl();
 const transactionController = new TransactionController(transactionRepository)
 
@@ -20,6 +20,7 @@ export const consumeTransactionMessages = async () => {
 
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
+            
             const transactionData = JSON.parse(message.value?.toString() || '{}');
             console.log(`Mensaje recibido en el tópico ${topic} - Partición ${partition}:`, transactionData);
 

@@ -102,7 +102,7 @@ describe('Transaction Controller', () => {
             result = await transactionRepository.findAll()
 
             const transactionData = {
-                transactionExternalId: result[0].id.toString(),
+                transactionExternalId: result[0].id,
                 transactionType: {
                     name: 2
                 },
