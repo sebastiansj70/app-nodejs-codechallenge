@@ -3,10 +3,11 @@ services:
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -21,5 +22,6 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
     ports:
       - 9092:9092
