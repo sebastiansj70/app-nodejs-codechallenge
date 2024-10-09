@@ -101,8 +101,8 @@ describe('Transaction Controller', () => {
             await transactionController.createTransaction(req as Request, res as Response)
             result = await transactionRepository.findAll()
 
-            req.body = {
-                transactionExternalId: result[0].id,
+            const transactionData = {
+                transactionExternalId: result[0].id.toString(),
                 transactionType: {
                     name: 2
                 },
@@ -110,49 +110,41 @@ describe('Transaction Controller', () => {
                     name: "approved"
                 },
                 value: 120,
-                createdAt: new Date()
+                createdAt: "2024-10-09T00:37:07.504Z"
             }
 
-            req.params = {
-                id: result[0].id
-            }
+            expect(result[0].transferTypeId).toBe(1)
+            expect(result[0].status).toBe("pending")
 
-            await transactionController.updateTransaction(req as Request, res as Response)
+            await transactionController.updateTransaction(transactionData)
             result = await transactionRepository.findAll()
 
+            expect(result[0].transferTypeId).toBe(2)
+            expect(result[0].status).toBe("approved")
             expect(result.length).toBe(1)
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(result[0]);
-            expect(result[0].transferTypeId).toBe(2);
         });
 
         it('should  return error when body is incorrect ', async () => {
-            req.body = {}
+            const transactionData = JSON.parse('{}');
+            await expect(transactionController.updateTransaction(transactionData)).rejects.toThrow(new Error('incorrect body'));
 
-            await transactionController.updateTransaction(req as Request, res as Response)
-
-            const result = await transactionRepository.findAll()
-            expect(result.length).toBe(0)
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'incorrect body' });
         });
 
         it('should return 404 if trnsaction does not exist', async () => {
-            req.params = {
-                id: 'non-existent-id'
+
+            const transactionData = {
+                transactionExternalId: 'non-existent-id',
+                transactionType: {
+                    name: 2
+                },
+                transactionStatus: {
+                    name: "approved"
+                },
+                value: 120,
+                createdAt: "2024-10-09T00:37:07.504Z"
             }
 
-            req.body = {
-                transactionExternalId: 'non-existent-id',
-                transactionType: { name: 2 },
-                transactionStatus: { name: 'aprobado' },
-                value: 120,
-                createdAt: new Date()
-            };
-
-            await transactionController.updateTransaction(req as Request, res as Response)
-            expect(res.status).toHaveBeenCalledWith(404)
-            expect(res.json).toHaveBeenCalledWith({ message: 'Transaction not found' })
+            await expect(transactionController.updateTransaction(transactionData)).rejects.toThrow(new Error('Transaction not found'));
         });
 
         it('should  return 500 if there is an internal server error', async () => {
@@ -167,27 +159,21 @@ describe('Transaction Controller', () => {
             await transactionController.createTransaction(req as Request, res as Response)
             result = await transactionRepository.findAll()
 
-            req.body = {
-                "transactionExternalId": result[0].id,
-                "transactionType": {
-                    "name": 2
+            const transactionData = {
+                transactionExternalId: result[0].id.toString(),
+                transactionType: {
+                    name: 2
                 },
-                "transactionStatus": {
-                    "name": "approved"
+                transactionStatus: {
+                    name: "approved"
                 },
-                "value": 120,
-                "createdAt": new Date()
-            }
-
-            req.params = {
-                id: result[0].id
+                value: 120,
+                createdAt: "2024-10-09T00:37:07.504Z"
             }
 
             jest.spyOn(transactionRepository, 'update').mockRejectedValue(new Error('Error server'))
 
-            await transactionController.updateTransaction(req as Request, res as Response);
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Error updating transaction', error: new Error('Error server') });
+            await expect(transactionController.updateTransaction(transactionData)).rejects.toThrow(new Error('Error server'));
 
         });
 

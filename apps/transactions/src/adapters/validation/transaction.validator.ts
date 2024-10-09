@@ -19,16 +19,17 @@ export const validateCreateTransactionDto = (data: any): data is CreateTransacti
 };
 
 export const validateUpdateTransactionBody = (data: any): data is UpdatedData => {
-    const { transactionType, transactionStatus, value, createdAt } = data;
+    const { transactionExternalId, transactionType, transactionStatus, value, createdAt } = data;
 
     if (
+        typeof transactionExternalId !== 'string' ||
         typeof transactionType !== 'object' ||
         typeof transactionType.name !== 'number' ||
         typeof transactionStatus !== 'object' ||
         typeof transactionStatus.name !== 'string' ||
         typeof value !== 'number' ||
         value <= 0 ||
-        !(createdAt instanceof Date)
+        typeof createdAt !== 'string'
     ) {
         return false;
     }

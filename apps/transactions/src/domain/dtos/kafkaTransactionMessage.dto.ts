@@ -1,4 +1,4 @@
-export interface UpdatedData {
+export interface KafkaTransactionMessage {
     transactionExternalId: string;
     transactionType: {
         name: number;
@@ -7,5 +7,5 @@ export interface UpdatedData {
         name: string;
     };
     value: number;
-    createdAt: string;
+    createdAt: Date;
 }

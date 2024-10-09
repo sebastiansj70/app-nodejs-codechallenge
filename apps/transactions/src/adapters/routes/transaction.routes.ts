@@ -11,8 +11,5 @@ router.post('/create', async (req: Request, res: Response) => {
     await transactionController.createTransaction(req, res)
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
-    await transactionController.updateTransaction(req, res);
-});
 
 export default router;

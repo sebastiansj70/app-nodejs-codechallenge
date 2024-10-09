@@ -4,6 +4,9 @@ import { TransactionRepository } from '../../domain/repositories/transaction.rep
 import { CreateTransactionUseCase } from '../../application/createTransaction.usecase';
 import { CreateTransactionDTO } from '../../domain/dtos/createTransaction.dto';
 import { validateCreateTransactionDto, validateUpdateTransactionBody } from '../validation/transaction.validator';
+import { sendTransactionMessage } from '../../infrastructure/messageBroker/kafkaProducer';
+import { mapTransactionToKafkaMessage } from '../../infrastructure/mappers/transaction.mapper';
+import { UpdatedData } from '../../domain/dtos/updatedTransaction.dto';
 
 
 export class TransactionController {
@@ -33,6 +36,9 @@ export class TransactionController {
             const createTransactionUseCase = new CreateTransactionUseCase(this.transactionRepository)
             const savedTransaction = await createTransactionUseCase.execute(createTransactionDto);
 
+            const message = mapTransactionToKafkaMessage(savedTransaction)
+            await sendTransactionMessage(message);
+
             return res.status(200).json(savedTransaction);
         } catch (error) {
             console.error('Error creating transaction:', error);
@@ -40,26 +46,20 @@ export class TransactionController {
         }
     };
 
-    public updateTransaction = async (req: Request, res: Response): Promise<Response | void> => {
+    public updateTransaction = async (data: UpdatedData): Promise<void> => {
         try {
-
-            if (!validateUpdateTransactionBody(req.body)) {
-                return res.status(400).json({ message: 'incorrect body' });
+            if (!validateUpdateTransactionBody(data)) {
+                throw new Error('incorrect body')
             }
 
-            const { id } = req.params;
-            const updatedData = req.body;
+            const id = data.transactionExternalId
 
             const updateTransactionUseCase = new UpdateTransactionUseCase(this.transactionRepository);
-            const updatedTransaction = await updateTransactionUseCase.execute(id, updatedData);
+            await updateTransactionUseCase.execute(id, data);
 
-            return res.status(200).json(updatedTransaction);
         } catch (error: any) {
-            if (error?.message === 'Transaction not found') {
-                return res.status(404).json({ message: 'Transaction not found' });
-            }
             console.error('Error updating transaction:', error);
-            return res.status(500).json({ message: 'Error updating transaction', error });
+            throw error;
         }
     };
 
