@@ -8,10 +8,9 @@ const envPath = path.resolve(__dirname, '../../../', '.env');
 dotenv.config({ path: envPath });
 
 if (process.env.NODE_ENV === 'test') {
-    dotenv.config({ path: path.resolve(__dirname, '../../../', '.env.test') });
     AppDataSource = new DataSource({
-        type: process.env.DB_TYPE as 'sqlite',
-        database: process.env.DB_HOST as string,
+        type: 'sqlite',
+        database: './db.sqlite',
         synchronize: Boolean(process.env.DB_SYNCHRONIZE),
         logging: ['query', 'error'],
         entities: [Transaction],

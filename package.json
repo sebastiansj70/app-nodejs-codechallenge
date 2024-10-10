@@ -4,13 +4,7 @@
     "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
     "main": "index.js",
     "private": true,
-    "scripts": {
-        "test": "jest",
-        "start:transactions": "ts-node ./apps/transactions/src/server.ts",
-        "dev:transactions": "nodemon --watch ./apps/transactions/src --exec ts-node ./apps/transactions/src/server.ts",
-        "start:anti-fraud": "ts-node ./apps/anti-fraud/src/server.ts",
-        "dev:anti-fraud": "nodemon --watch ./apps/anti-fraud/src --exec ts-node ./apps/anti-fraud/src/server.ts"
-    },
+    "scripts": {},
     "keywords": [],
     "author": "",
     "license": "ISC"
