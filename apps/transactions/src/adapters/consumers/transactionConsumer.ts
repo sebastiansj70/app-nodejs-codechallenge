@@ -2,8 +2,10 @@ import { Kafka } from 'kafkajs';
 import dotenv from 'dotenv';
 import { TransactionRepositoryImpl } from '../../domain/repositories/transaction.repository';
 import { TransactionController } from '../controllers/transaction.controller';
+import path from 'path';
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../../../', '.env');
+dotenv.config({ path: envPath });
 
 const kafka = new Kafka({
     clientId: process.env.KAFKA_CLIENT_ID_TRANSACTIONS,
@@ -20,7 +22,7 @@ export const consumeTransactionMessages = async () => {
 
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
-            
+
             const transactionData = JSON.parse(message.value?.toString() || '{}');
             console.log(`Mensaje recibido en el tópico ${topic} - Partición ${partition}:`, transactionData);
 

@@ -3,8 +3,10 @@ import dotenv from 'dotenv';
 import { ProcessTransactionUseCase } from '../../application/processTransaction.usecase';
 import { AntiFraudService } from '../../domain/services/antiFraud.service'
 import { produceFraudResult } from '../producers/antiFraudProducer';
+import path from 'path';
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../../../', '.env');
+dotenv.config({ path: envPath });
 
 const kafka = new Kafka({
     clientId: process.env.KAFKA_CLIENT_ID_ANTI_FRAUD,

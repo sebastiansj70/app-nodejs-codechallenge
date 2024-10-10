@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
     "main": "index.js",
+    "private": true,
     "scripts": {
         "test": "jest",
         "start:transactions": "ts-node ./apps/transactions/src/server.ts",
@@ -10,31 +11,7 @@
         "start:anti-fraud": "ts-node ./apps/anti-fraud/src/server.ts",
         "dev:anti-fraud": "nodemon --watch ./apps/anti-fraud/src --exec ts-node ./apps/anti-fraud/src/server.ts"
     },
-    "workspaces": [
-        "./apps/anti-fraud",
-        "./apps/transaction"
-    ],
     "keywords": [],
     "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "dotenv": "^16.4.5",
-        "express": "^4.21.0",
-        "kafkajs": "^2.2.4",
-        "nodemon": "^3.1.7",
-        "pg": "^8.13.0",
-        "reflect-metadata": "^0.2.2",
-        "sqlite3": "^5.1.7",
-        "typeorm": "^0.3.20"
-    },
-    "devDependencies": {
-        "@types/express": "^5.0.0",
-        "@types/jest": "^29.5.13",
-        "@types/node": "^22.7.4",
-        "@types/uuid": "^10.0.0",
-        "jest": "^29.7.0",
-        "ts-jest": "^29.2.5",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.6.2"
-    }
+    "license": "ISC"
 }

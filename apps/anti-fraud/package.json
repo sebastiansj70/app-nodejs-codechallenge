@@ -1,0 +1,33 @@
+{
+    "name": "anti-fraud",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/server.ts",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "build": "tsc",
+        "start:anti-fraud": "ts-node ./src/server.ts",
+        "dev:anti-fraud": "nodemon --watch ./src --exec ts-node -r tsconfig-paths/register ./src/server.ts",
+        "test": "jest --coverage"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "kafkajs": "^2.2.4",
+        "pg": "^8.13.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.13",
+        "@types/node": "^22.7.4",
+        "jest": "^29.7.0",
+        "nodemon": "^3.1.7",
+        "ts-jest": "^29.2.5",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.6.3"
+    }
+}
