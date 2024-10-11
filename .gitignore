@@ -70,10 +70,8 @@ typings/
 
 # dotenv environment variables file
 .env
-.env.test
 apps/anti-fraud/.env
 apps/transactions/.env
-apps/transactions/.env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
