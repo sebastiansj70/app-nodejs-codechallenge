@@ -1,82 +1,137 @@
-# Yape Code Challenge :rocket:
+# Proyecto de Transacciones y Antifraude
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Descripción del Proyecto
+Este proyecto consiste en dos microservicios que trabajan juntos para procesar transacciones y detectar fraudes. El servicio de transacciones permite a los usuarios crear transacciones financieras, mientras que el servicio de antifraude monitorea las transacciones y marca aquellas que puedan ser fraudulentas.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Tecnologías Utilizadas
+- **Node.js**
+- **TypeScript**
+- **Kafka** (para la comunicación entre microservicios)
+- **PostgreSQL** (base de datos)
+- **Docker** (para contenedorización de los servicios)
+- **Jest** (para pruebas unitarias)
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Requisitos
+- Tener Docker instalado y en funcionamiento.
+- Tener `docker-compose` para manejar los contenedores.
+- Opcional: Postman o cURL para realizar pruebas en la API.
 
-# Problem
+## Instalación y Configuración
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/usuario/proyecto-transacciones-antifraude.git
+   cd proyecto-transacciones-antifraude
+   ```
+2. configuracion:
+    ## Configuración del Archivo .env
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+- Para configurar el archivo `.env` para el módulo de **Transacciones**, sigue estos pasos:
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+1. Navega a la carpeta `apps/transactions`.
+2. Crea un archivo `.env` en la carpeta `apps/transactions`.
+3. Copia el contenido del archivo `.env.example` y pégalo en el nuevo archivo `.env`.
+4. Rellena los valores de las variables de entorno según sea necesario:
 
-Every transaction with a value greater than 1000 should be rejected.
+```bash
+# Database Configuration
+DB_TYPE=postgres
+DB_HOST=your_database_host_here  # Ejemplo: postgres
+DB_PORT=5432
+DB_USERNAME=your_db_username_here  # Ejemplo: postgres
+DB_PASSWORD=your_db_password_here  # Ejemplo: 123456
+DB_DATABASE=your_db_name_here  # Ejemplo: postgres
+DB_SYNCHRONIZE=true  # Cambiar a false en producción si no es necesario sincronizar
+DB_LOGGING=false  # Cambiar a true si se necesita logging de consultas SQL
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+# Kafka Configuration
+KAFKA_BROKER=your_kafka_broker_here  # Ejemplo: kafka:29092
+
+# Kafka Topics
+KAFKA_TOPIC_TRANSACTIONS=your_transactions_topic_here  # Ejemplo: transactions
+KAFKA_TOPIC_UPDATE=your_update_topic_here  # Ejemplo: antifraud-transactions-status
+
+# Transaction Module Configuration
+KAFKA_CLIENT_ID_TRANSACTIONS=your_client_id_here  # Ejemplo: transactions-service
+KAFKA_GROUP_ID_TRANSACTIONS=your_group_id_here  # Ejemplo: transactions-consumers
 ```
 
-# Tech Stack
+- Para configurar el archivo `.env` para el módulo de **Anti-Fraude**, sigue estos pasos:
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+1. Navega a la carpeta `apps/anti-fraud`.
+2. Crea un archivo `.env` en la carpeta `apps/anti-fraud`.
+3. Copia el contenido del archivo `.env.example` y pégalo en el nuevo archivo `.env`.
+4. Rellena los valores de las variables de entorno según sea necesario:
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+```bash
+# Kafka Configuration
+KAFKA_BROKER=your_kafka_broker_here  # Ejemplo: kafka:29092
 
-You must have two resources:
+# Kafka Topics
+KAFKA_TOPIC_TRANSACTIONS=your_transactions_topic_here  # Ejemplo: transactions
+KAFKA_TOPIC_UPDATE=your_update_topic_here  # Ejemplo: antifraud-transactions-status
 
-1. Resource to create a transaction that must containt:
+# Anti-Fraud Module Configuration
+KAFKA_CLIENT_ID_ANTI_FRAUD=your_client_id_here  # Ejemplo: anti-fraud-service
+KAFKA_GROUP_ID_ANTI_FRAUD=your_group_id_here  # Ejemplo: anti-fraud-consumers
 
+```
+
+3. Levanta los servicios utilizando Docker:
+   ```bash
+   docker-compose up --build
+   ```
+
+Esto levantará los siguientes contenedores:
+- **PostgreSQL** en el puerto `5433`
+- **Kafka** en el puerto `29092`
+- **Microservicio de Transacciones** en el puerto `3000`
+- **Microservicio de Antifraude**
+
+## Uso de la API de Transacciones
+Una vez que los contenedores estén en funcionamiento, puedes crear una transacción enviando una solicitud `POST` a la siguiente ruta:
+
+`POST http://localhost:3000/api/transactions/create`
+
+Con el siguiente cuerpo de ejemplo:
 ```json
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+    "accountExternalIdDebit": "Guid",
+    "accountExternalIdCredit": "Guid",
+    "transferTypeId": 1,
+    "value": 3100
 }
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+Puedes hacer la solicitud desde Postman o utilizando `cURL`:
+```bash
+curl -X POST http://localhost:3000/api/transactions/create \
+   -H "Content-Type: application/json" \
+   -d '{
+    "accountExternalIdDebit": "Guid",
+    "accountExternalIdCredit": "Guid",
+    "transferTypeId": 1,
+    "value": 3100
+}'
 ```
 
-## Optional
+## Ejecución de Pruebas
+Cada microservicio tiene sus propias pruebas unitarias que puedes ejecutar de la siguiente manera:
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+### Pruebas del Servicio de Transacciones
+```bash
+cd apps/transactions
+npm run test
+```
 
-You can use Graphql;
+### Pruebas del Servicio de Antifraude
+```bash
+cd apps/anti-fraud
+npm run test
+```
 
-# Send us your challenge
+## Notas Adicionales
+- El servicio de transacciones se conecta a una base de datos PostgreSQL, que está en un contenedor. Si deseas ver los datos almacenados, puedes usar `pgAdmin` configurando la conexión con el host `localhost` y el puerto `5433`.
+- Kafka se usa para la comunicación entre los microservicios de transacciones y antifraude.
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
-If you have any questions, please let us know.
+

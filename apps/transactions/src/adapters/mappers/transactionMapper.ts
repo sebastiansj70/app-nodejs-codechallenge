@@ -3,7 +3,7 @@ import { KafkaTransactionMessage } from "../../domain/dtos/kafkaTransactionMessa
 
 export const mapTransactionToKafkaMessage = (transaction: Transaction): KafkaTransactionMessage => {
     return {
-        transactionExternalId: transaction.id,
+        transactionExternalId: transaction.id.toString(),
         transactionType: {
             name: transaction.transferTypeId,
         },

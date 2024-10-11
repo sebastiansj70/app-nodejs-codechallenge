@@ -3,7 +3,7 @@ const isSQLite = process.env.NODE_ENV === 'test'
 
 @Entity('transactions')
 export class Transaction {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id!: string;
 
     @Column()

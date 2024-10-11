@@ -1,19 +1,21 @@
 import { DataSource } from 'typeorm';
 import { Transaction } from '../../domain/entities/transaction.entity';
 import dotenv from 'dotenv';
+import path from 'path';
 
 let AppDataSource: DataSource
+const envPath = path.resolve(__dirname, '../../../', '.env');
+dotenv.config({ path: envPath });
+
 if (process.env.NODE_ENV === 'test') {
-    dotenv.config({ path: '.env.test' });
     AppDataSource = new DataSource({
         type: 'sqlite',
         database: './db.sqlite',
-        synchronize: true,
+        synchronize: Boolean(process.env.DB_SYNCHRONIZE),
         logging: ['query', 'error'],
         entities: [Transaction],
     });
 } else {
-    dotenv.config();
     AppDataSource = new DataSource({
         type: process.env.DB_TYPE as 'postgres',
         host: process.env.DB_HOST,

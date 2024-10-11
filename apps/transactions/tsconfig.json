@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ES2017",
+        "target": "ES6",
         "module": "commonjs",
         "strict": true,
         "esModuleInterop": true,
@@ -8,14 +8,10 @@
         "forceConsistentCasingInFileNames": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "rootDir": "./",
+        "types": ["jest", "node"] 
     },
-    "include": [
-        "apps/**/*",
-        "apps/transactions/src/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ]
+    "include": ["src/**/*", "test/**/*"],
+    "exclude": ["node_modules", "dist"]
 }

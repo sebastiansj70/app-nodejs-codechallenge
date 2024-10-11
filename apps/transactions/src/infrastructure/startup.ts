@@ -1,5 +1,5 @@
 import AppDataSource from "./database/transaction.ormconfig";
-import { consumeTransactionMessages } from "./kafka/kafkaConsumer";
+import { consumeTransactionMessages } from "../adapters/consumers/transactionConsumer";
 
 
 export const initializeApp = async () => {

@@ -3,9 +3,12 @@ import { TransactionController } from '../../../src/adapters/controllers/transac
 import { TransactionRepositoryImpl } from '../../../src/domain/repositories/transaction.repository';
 import AppDataSource from '../../../src/infrastructure/database/transaction.ormconfig';
 
-
+jest.mock('../../../src/adapters/producers/transactionProducer', () => ({
+    sendTransactionMessage: jest.fn(),
+  }));
 
 describe('Transaction Controller', () => {
+    process.env.NODE_ENV = 'test'
     let req: Partial<Request>;
     let res: Partial<Response>;
     let transactionController: TransactionController
@@ -102,7 +105,7 @@ describe('Transaction Controller', () => {
             result = await transactionRepository.findAll()
 
             const transactionData = {
-                transactionExternalId: result[0].id.toString(),
+                transactionExternalId: result[0].id,
                 transactionType: {
                     name: 2
                 },
