@@ -1,6 +1,7 @@
 import { Kafka } from 'kafkajs';
 import dotenv from 'dotenv';
 import path from 'path';
+import { KafkaTransactionMessage } from '../../domain/dtos/kafkaTransactionMessage.dto';
 
 const envPath = path.resolve(__dirname, '../../../', '.env');
 dotenv.config({ path: envPath });
@@ -13,7 +14,7 @@ const kafka = new Kafka({
 const producer = kafka.producer();
 
 
-export const sendTransactionMessage = async (transactionData: any) => {
+export const sendTransactionMessage = async (transactionData: KafkaTransactionMessage) => {
     await producer.connect();
 
     try {

@@ -25,6 +25,7 @@ export const produceFraudResult = async (transactionData: KafkaTransactionMessag
         console.log('Transaction message sent:', transactionData);
     } catch (error) {
         console.error('Error sending transaction message:', error);
+        throw error;
     } finally {
         await producer.disconnect();
     }
